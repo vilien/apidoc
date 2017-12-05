@@ -1,0 +1,23 @@
+{
+  "name": "apidoc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vilien/apidoc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vilien/apidoc/issues"
+  },
+  "scripts": {
+    "start": "node index"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "js-yaml": "^3.10.0",
+    "recursive-readdir": "^2.2.1"
+  }
+}
