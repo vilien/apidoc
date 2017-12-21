@@ -8,6 +8,7 @@ const cfg = require('../config.json');
 
 // 读取菜单信息
 function readMenu(apiPath) {
+  const confPatt = /urls\.conf$/;
   const yamlPatt = /(?:\.yaml|\.yml)$/;
   const jsonPatt = /\.json$/;
   const headPatt = /#\s*(.+)[\r\n]/;
@@ -30,8 +31,22 @@ function readMenu(apiPath) {
         list: readMenu(filePath),
       });
     } else if (info.isFile()) {
-      const fileType = yamlPatt.test(filePath) ? 'yaml' : (jsonPatt.test(filePath) ? 'json' : 'other');
-      if (fileType === 'yaml') {
+      const fileType = confPatt.test(filePath) ? 'conf'
+        : yamlPatt.test(filePath)  ? 'yaml'
+        : jsonPatt.test(filePath)  ? 'json'
+        : 'other';
+      if (fileType === 'conf') {
+        const urls = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (Array.isArray(urls)) {
+          urls.forEach(item => {
+            menu.push({
+              info: { title: item.title },
+              type: 'api',
+              path: item.url,
+            });
+          });
+        }
+      } else if (fileType === 'yaml') {
         try {
           const doc = yaml.safeLoad(fs.readFileSync(filePath, 'utf8'));
           menu.push({
